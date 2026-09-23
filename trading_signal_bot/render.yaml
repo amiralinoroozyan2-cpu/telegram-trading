@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: trading-signal-bot
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r trading_signal_bot/requirements.txt
+    startCommand: python -m trading_signal_bot.main
+    healthCheckPath: /health
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: OWNER_TELEGRAM_ID
+        sync: false
+      - key: TELEGRAM_CHANNEL_ID
+        sync: false
+      - key: TIMEZONE
+        value: Asia/Tehran
+      - key: CHECK_INTERVAL_SECONDS
+        value: "300"
+      - key: DATABASE_PATH
+        value: /var/data/signals.db
+      - key: MARKET_SYMBOL
+        value: BTCUSDT
+      - key: MARKET_INTERVAL
+        value: 5m
+      - key: MARKET_LIMIT
+        value: "200"
+      - key: SIGNAL_EXPIRY_HOURS
+        value: "24"
+    disk:
+      name: trading-signal-data
+      mountPath: /var/data
+      sizeGB: 1
